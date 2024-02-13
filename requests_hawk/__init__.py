@@ -3,6 +3,7 @@ import codecs
 import hashlib
 import hmac
 import math
+import os
 from six.moves import xrange
 from six.moves.urllib.parse import urlparse
 from six import text_type
@@ -141,9 +142,10 @@ try:
         description = ''
 
         def get_auth(self, username, password):
+            ext = os.getenv("HAWK_EXT_PAYLOAD")
             if password == '':
-                return HawkAuth(hawk_session=username)
-            return HawkAuth(id=username, key=password)
+                return HawkAuth(hawk_session=username, always_hash_content=False)
+            return HawkAuth(id=username, key=password, ext=ext, always_hash_content=False)
 
 except ImportError:
     pass
